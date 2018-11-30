@@ -1,7 +1,6 @@
 ##Limpieza de muestras
 En este caso fueron 2 runs por lo que era necesario primero juntar las reads de ambos para cada una de las muestras:
 
-```{r, engine='bash', eval=FALSE}
 #!/bin/bash
 PATH_SAMPLE1=/datos/Pseudomonas_HGral/raw_data/141205/fastq
 PATH_SAMPLE2=/datos/Pseudomonas_HGral/raw_data/141205/fastq
@@ -16,10 +15,9 @@ for file in ./*.fastq.gz; do
 
 done
 
-```
 
-El script de limpieza:
-```{r, engine='bash', eval=FALSE}
+
+#El script de limpieza:
 #!/bin/bash
 
 CUTADAPT=/home/paula/.local/bin/cutadapt
@@ -43,5 +41,5 @@ for i in ../*_1_notag.fastq;do
 x=`echo $i | sed 's/_1_notag.fastq//' `;
 perl $PRINSEQ -fastq "$x"_1_notag.fastq -fastq2 "$x"_2_notag.fastq -min_len 50 -trim_left 10 -trim_qual_right 30 -trim_qual_type mean -trim_qual_window 20 -out_good "$x"_trimmed;
 done 1>prinseq.log
-```
+
 
