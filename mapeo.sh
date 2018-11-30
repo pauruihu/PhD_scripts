@@ -1,7 +1,6 @@
 ##Mapeo
-Utilizamos la referencia Pseudomonas_aeruginosa_isolate_W16407_3629.fna de ST244, el mayoritario en este dataset.
+#Utilizamos la referencia Pseudomonas_aeruginosa_isolate_W16407_3629.fna de ST244, el mayoritario en este dataset.
 
-```{r, engine='bash', eval=FALSE}
 #!/bin/bash
 
 #PATHS PROGRAMAS
@@ -15,7 +14,7 @@ REFERENCE=Pseudomonas_aeruginosa_isolate_W16407_3629.fna
 PREFIX_REF=W16407
 PATH_cleanedfastq=/datos/Pseudomonas_HGral/data/fastq_cleaned-merged/autoadapt/prinseq
 
-#-R en bwa podemos incorporar el Read Group necesario para que no nos dÈ error el GATK luego!
+#-R en bwa podemos incorporar el Read Group necesario para que no nos d√© error el GATK luego!
 
 mkdir ./BWA
 cd ./BWA
@@ -37,8 +36,8 @@ $SAMTOOLS sort "$x"_mem.bam -o sorted_mem_"$x".bam;
 $SAMTOOLS index sorted_mem_"$x".bam;
 rm "$x"_mem.bam "$x"_mem.sam;
 
-#si se nos ha olvidado el -r en bwa, habr· que aÒadirse el RG a posteriori con picard-tools
-echo -e "\e[105mAdiciÛn RG de la muestra "$x" y alineacion de SNPs\e[49m";
+#si se nos ha olvidado el -r en bwa, habr√° que a√±adirse el RG a posteriori con picard-tools
+echo -e "\e[105mAdici√≥n RG de la muestra "$x" y alineacion de SNPs\e[49m";
 picard-tools AddOrReplaceReadGroups I= sorted_mem_"$x".bam O= sorted_RG_mem_"$x".bam SORT_ORDER=coordinate RGID=foo RGLB=bar RGPL=illumina RGSM=Sample RGPU=NONE CREATE_INDEX=True;
 rm sorted_mem_"$x".bam sorted_mem_"$x".bam.bai;
 java -Xmx8g -jar $PATH_PICARD/MarkDuplicates.jar INPUT=sorted_RG_mem_"$x".bam OUTPUT="$x".dedup.bam METRICS_FILE="$x".metrics REMOVE_DUPLICATES=true;
@@ -49,5 +48,4 @@ java -jar $GATK -T IndelRealigner -R $REFERENCE -I "$x".dedup.bam -targetInterva
 rm "$x".dedup.bam "$x".dedup.bam.bai "$x".dedup.bai sorted_RG_mem_"$x".bam sorted_RG_mem_"$x".bai
 
 done
-```
 
